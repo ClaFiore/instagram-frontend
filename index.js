@@ -6,6 +6,7 @@ const divSignupModal = document.getElementById('signup-modal')
 const br = document.createElement('br')
 const signupForm = document.querySelector('form.signup-form')
     let inputEmail = document.createElement('input')
+    let inputName = document.createElement('input')
     let inputUsername = document.createElement('input')
     let inputPassword = document.createElement('input')
     let inputSubmit = document.createElement('input')
@@ -20,9 +21,19 @@ const containerDiv = document.createElement('div')
     containerDiv.className = 'container'
 const profilePic = document.createElement('img')
     profilePic.className= 'profile-pic'
-const profileName = document.createElement('h2')
+const profileUsername = document.createElement('h2')
+const profileName = document.createElement('h3')
 const editUserBtn = document.createElement('button')
+    editUserBtn.className = 'edit-user-btn'
 const bioUser = document.createElement('h4')
+const homeImg = document.createElement('img')
+    homeImg.className = 'home-icon'
+    homeImg.src='https://images.vexels.com/media/users/3/147094/isolated/preview/055a10de0c31e98eef1451f742c32345-instagram-home-icon-by-vexels.png'
+const searchBar = document.createElement('input')
+    searchBar.setAttribute('type', 'text')
+    searchBar.className = 'searchBar'
+    searchBar.setAttribute('placeholder', 'Search')
+
 loginForm.addEventListener('submit', loginFunct)
 signupBtn.addEventListener('click', signupFunct)
 
@@ -36,6 +47,8 @@ function loginFunct() {
 function signupFunct(){
     inputEmail.setAttribute('placeholder', 'Email')
     inputEmail.setAttribute('type', 'text')
+    inputName.setAttribute('placeholder', 'Full Name')
+    inputName.setAttribute('type', 'text')
     inputUsername.setAttribute('placeholder', 'Username')
     inputUsername.setAttribute('type', 'text')
     inputPassword.setAttribute('placeholder', 'Password')
@@ -45,12 +58,13 @@ function signupFunct(){
     inputSubmit.className = 'login-signup-btn'
     divSignupModal.className = 'card'
     signupModal.append(spanCloseModal)
-    signupForm.append(inputEmail, br, inputUsername, br, inputPassword, br, inputSubmit)
+    signupForm.append(inputEmail, br, inputName, br, inputUsername, br, inputPassword, br, inputSubmit)
     
     signupForm.addEventListener('submit', () => {
         event.preventDefault()
         console.log(inputEmail.value, inputUsername.value, inputPassword.value)
         let email = inputEmail.value
+        let name = inputName.value
         let username = inputUsername.value
         let password = inputPassword.value
         configObj = {method: 'POST',
@@ -72,19 +86,16 @@ function closeSignUp(){
 
 function displayUserProfile(user){
     homeDiv.innerHTML = ''
-    const homeImg = document.createElement('img')
-    homeImg.className = 'home-icon'
-    homeImg.src='https://images.vexels.com/media/users/3/147094/isolated/preview/055a10de0c31e98eef1451f742c32345-instagram-home-icon-by-vexels.png'
-    const searchBar = document.createElement('input')
-    searchBar.setAttribute('type', 'text')
-    searchBar.className = 'searchBar'
-    searchBar.setAttribute('placeholder', 'Search')
     navBar.append(searchBar, homeImg)
+    
     profilePic.src = user.profilepic      //add profilepic attribute to User model!
-    profileName.innerText = user.username
+    profileUsername.innerText = user.username
+    profileName.innerText = user.name
     bioUser.innerText = user.bio
-    containerDiv.append(profilePic, profileName, editUserBtn)
+    
+    containerDiv.append(profilePic, editUserBtn, profileUsername, profileName, bioUser)
     homeDiv.append(containerDiv)
+    
     editUserBtn.addEventListener('click', editUser(user))
     user.posts.forEach(post => displayUserPost(post))
 }
