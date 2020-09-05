@@ -16,7 +16,13 @@ const spanCloseModal = document.createElement('span')
     spanCloseModal.innerHTML = '<span class="close">&times;</span>'
     spanCloseModal.addEventListener('click', closeSignUp)
 const navBar = document.querySelector('nav.nav-bar')
-
+const containerDiv = document.createElement('div')
+    containerDiv.className = 'container'
+const profilePic = document.createElement('img')
+    profilePic.className= 'profile-pic'
+const profileName = document.createElement('h2')
+const editUserBtn = document.createElement('button')
+const bioUser = document.createElement('h4')
 loginForm.addEventListener('submit', loginFunct)
 signupBtn.addEventListener('click', signupFunct)
 
@@ -24,6 +30,7 @@ signupBtn.addEventListener('click', signupFunct)
 function loginFunct() {
     event.preventDefault()
     // code here
+    displayUserProfile(user)
 }
 
 function signupFunct(){
@@ -67,11 +74,27 @@ function displayUserProfile(user){
     homeDiv.innerHTML = ''
     const homeImg = document.createElement('img')
     homeImg.className = 'home-icon'
-    homeImg.src= 'https://images.vexels.com/media/users/3/147094/isolated/preview/055a10de0c31e98eef1451f742c32345-instagram-home-icon-by-vexels.png'
+    homeImg.src='https://images.vexels.com/media/users/3/147094/isolated/preview/055a10de0c31e98eef1451f742c32345-instagram-home-icon-by-vexels.png'
     const searchBar = document.createElement('input')
     searchBar.setAttribute('type', 'text')
+    searchBar.className = 'searchBar'
     searchBar.setAttribute('placeholder', 'Search')
     navBar.append(searchBar, homeImg)
+    profilePic.src = user.profilepic      //add profilepic attribute to User model!
+    profileName.innerText = user.username
+    bioUser.innerText = user.bio
+    containerDiv.append(profilePic, profileName, editUserBtn)
+    homeDiv.append(containerDiv)
+    editUserBtn.addEventListener('click', editUser(user))
+    user.posts.forEach(post => displayUserPost(post))
+}
+
+function displayUserPost(post){
+    //posts
+}
+
+function editUser(user){
+ // patch request to edit user
 }
 
 
