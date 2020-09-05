@@ -1,6 +1,6 @@
 const usersUrl = 'http://localhost:3000/api/v1/users'
 const navBarDiv = document.getElementById('nav-bar')
-const containerDiv = document.getElementById('container')
+const homeDiv = document.getElementById('home')
 const loginForm = document.getElementById('login-form')
 const divSignupModal = document.getElementById('signup-modal')
 const br = document.createElement('br')
@@ -15,6 +15,7 @@ const spanCloseModal = document.createElement('span')
     spanCloseModal.className = 'close-modal'
     spanCloseModal.innerHTML = '<span class="close">&times;</span>'
     spanCloseModal.addEventListener('click', closeSignUp)
+const navBar = document.querySelector('nav.nav-bar')
 
 loginForm.addEventListener('submit', loginFunct)
 signupBtn.addEventListener('click', signupFunct)
@@ -35,7 +36,7 @@ function signupFunct(){
     inputSubmit.setAttribute('type', 'submit')
     inputSubmit.setAttribute('value', 'Sign Up')
     inputSubmit.className = 'login-signup-btn'
-    divSignupModal.className = 'modal'
+    divSignupModal.className = 'card'
     signupModal.append(spanCloseModal)
     signupForm.append(inputEmail, br, inputUsername, br, inputPassword, br, inputSubmit)
     
@@ -51,14 +52,28 @@ function signupFunct(){
                     body: JSON.stringify({username, email, password})}
         fetch(usersUrl, configObj)
         .then(resp => resp.json())
-        .then(console.log)
-        closeSignUp()
+        .then(newUser => {
+            displayUserProfile(newUser)
+        })
+        
     })
 }
 
 function closeSignUp(){
     signupModal.remove()
 }
+
+function displayUserProfile(user){
+    homeDiv.innerHTML = ''
+    const homeImg = document.createElement('img')
+    homeImg.className = 'home-icon'
+    homeImg.src= 'https://images.vexels.com/media/users/3/147094/isolated/preview/055a10de0c31e98eef1451f742c32345-instagram-home-icon-by-vexels.png'
+    const searchBar = document.createElement('input')
+    searchBar.setAttribute('type', 'text')
+    searchBar.setAttribute('placeholder', 'Search')
+    navBar.append(searchBar, homeImg)
+}
+
 
 fetch(usersUrl)
 .then(res => res.json())
