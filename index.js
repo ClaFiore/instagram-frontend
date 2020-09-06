@@ -1,24 +1,42 @@
 const usersUrl = 'http://localhost:3000/api/v1/users'
+const postsUrl = 'http://localhost:3000/api/v1/posts'
+
+// navigation bar
 const navBarDiv = document.getElementById('nav-bar')
-const homeDiv = document.getElementById('home')
-const loginForm = document.getElementById('login-form')
+const searchBar = document.querySelector('input.search-bar')
+const homeIconImg = document.querySelector('img.home-icon')
+
+// intro to signup or login
+const homeDiv = document.createElement('div')   
+        homeDiv.className = 'intro'
+const signupBtn = document.createElement('button')      //signup button
+        signupBtn.setAttribute('id', 'signup-btn')
+const loginForm = document.createElement('form')
+        loginForm.setAttribute('id', 'login-form')     //login form
 const divSignupModal = document.getElementById('signup-modal')
 const br = document.createElement('br')
-const signupForm = document.querySelector('form.signup-form')
-    let inputEmail = document.createElement('input')
-    let inputName = document.createElement('input')
-    let inputUsername = document.createElement('input')
-    let inputPassword = document.createElement('input')
-    let inputSubmit = document.createElement('input')
-const signupBtn = document.getElementById('signup-btn')
+    loginForm.addEventListener('submit', loginFunct)    //add event listener for login form
+    signupBtn.addEventListener('click', signupFunct)    //add event listener for signup btn
+const signupForm = document.createElement('form')       //signup form
+        signupForm.className ='signup-form'
+        let inputEmail = document.createElement('input')
+        let inputName = document.createElement('input')
+        let inputUsername = document.createElement('input')
+        let inputPassword = document.createElement('input')
+        let inputSubmit = document.createElement('input')
+
+// signup modal
 const signupModal = document.getElementById('signup-modal')
 const spanCloseModal = document.createElement('span')
-    spanCloseModal.className = 'close-modal'
-    spanCloseModal.innerHTML = '<span class="close">&times;</span>'
-    spanCloseModal.addEventListener('click', closeSignUp)
+        spanCloseModal.className = 'close-modal'
+        spanCloseModal.innerHTML = '<span class="close">&times;</span>'
+    spanCloseModal.addEventListener('click', closeSignUp)   //event listener to x-out the signup modal
 const navBar = document.querySelector('nav.nav-bar')
-const containerDiv = document.createElement('div')
-    containerDiv.className = 'container'
+const containerDiv = document.querySelector('div.container')
+
+//user profile
+const profileContainer = document.createElement('div')
+    profileContainer.className = 'container'
 const profilePic = document.createElement('img')
     profilePic.className= 'profile-pic'
 const profileUsername = document.createElement('h2')
@@ -26,24 +44,15 @@ const profileName = document.createElement('h3')
 const editUserBtn = document.createElement('button')
     editUserBtn.className = 'edit-user-btn'
 const bioUser = document.createElement('h4')
-const homeImg = document.createElement('img')
-    homeImg.className = 'home-icon'
-    homeImg.src='https://images.vexels.com/media/users/3/147094/isolated/preview/055a10de0c31e98eef1451f742c32345-instagram-home-icon-by-vexels.png'
-const searchBar = document.createElement('input')
-    searchBar.setAttribute('type', 'text')
-    searchBar.className = 'searchBar'
-    searchBar.setAttribute('placeholder', 'Search')
 
-loginForm.addEventListener('submit', loginFunct)
-signupBtn.addEventListener('click', signupFunct)
-
-
+// login
 function loginFunct() {
     event.preventDefault()
     // code here
     displayUserProfile(user)
 }
 
+//signup - create new user
 function signupFunct(){
     inputEmail.setAttribute('placeholder', 'Email')
     inputEmail.setAttribute('type', 'text')
@@ -84,6 +93,7 @@ function closeSignUp(){
     signupModal.remove()
 }
 
+// user profile
 function displayUserProfile(user){
     homeDiv.innerHTML = ''
     navBar.append(searchBar, homeImg)
@@ -108,7 +118,13 @@ function editUser(user){
  // patch request to edit user
 }
 
+//homepage
+function homepagePosts(){
+    fetch(postsUrl)
+    .then(res => res.json())
+    .then(postsArray => postsArray.forEach(post => renderPostHome(post)))
+}
 
-fetch(usersUrl)
-.then(res => res.json())
-.then(console.log)
+function renderPostHome(post){
+    console.log(post)
+}
