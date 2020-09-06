@@ -45,6 +45,10 @@ const editUserBtn = document.createElement('button')
     editUserBtn.className = 'edit-user-btn'
 const bioUser = document.createElement('h4')
 
+//homepage
+const homepageDiv = document.querySelector('div.homepage')
+
+
 // login
 function loginFunct() {
     event.preventDefault()
@@ -93,7 +97,7 @@ function closeSignUp(){
     signupModal.remove()
 }
 
-// user profile
+//user profile
 function displayUserProfile(user){
     homeDiv.innerHTML = ''
     navBar.append(searchBar, homeImg)
@@ -119,6 +123,7 @@ function editUser(user){
 }
 
 //homepage
+homepagePosts()
 function homepagePosts(){
     fetch(postsUrl)
     .then(res => res.json())
@@ -126,5 +131,31 @@ function homepagePosts(){
 }
 
 function renderPostHome(post){
-    console.log(post)
+    const homePostDiv = document.createElement('div')
+        homePostDiv.className = 'home-post'
+    const h3username = document.createElement('h3')
+        h3username.innerText = 'post.user.username'
+    const captionP = document.createElement('p')
+        captionP.innerText = post.caption
+    const postImgDiv = document.createElement('div')
+        postImgDiv.className = 'home-post-img-div'
+    const postImage = document.createElement('img')
+        postImage.className = 'post-image'
+        postImage.src = post.image
+    postImgDiv.append(postImage)
+    
+    const likeBtn = document.createElement('button')
+        likeBtn.innerText = '❤️ ' + post.likes
+        likeBtn.className = 'heart-btn'
+    
+    homePostDiv.append(h3username, postImgDiv, likeBtn, captionP)
+    
+    if (post.comments > 0) {
+    post.comments.forEach(comment => {
+        let commentP = document.createElement('p')
+        commentP.innerText = comment.content
+        homePostDiv.append(commentP)
+    })}
+    
+    homepageDiv.append(homePostDiv)
 }
