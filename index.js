@@ -134,7 +134,7 @@ function renderPostHome(post){
     const homePostDiv = document.createElement('div')
         homePostDiv.className = 'home-post'
     const h3username = document.createElement('h3')
-        h3username.innerText = 'post.user.username'
+        h3username.innerText = post.user.username
     const captionP = document.createElement('p')
         captionP.innerText = post.caption
     const postImgDiv = document.createElement('div')
@@ -150,12 +150,19 @@ function renderPostHome(post){
     
     homePostDiv.append(h3username, postImgDiv, likeBtn, captionP)
     
-    if (post.comments > 0) {
+    if (post.comments.length > 0) {
     post.comments.forEach(comment => {
         let commentP = document.createElement('p')
-        commentP.innerText = comment.content
+        commentP.innerText = comment.user.username + ': ' + comment.content
         homePostDiv.append(commentP)
     })}
+
+    if (post.hashtags.length > 0) {
+        post.hashtags.forEach(hashtag => {
+            let hashtagP = document.createElement('p')
+            hashtagP.innerText = hashtag.name
+            homePostDiv.append(hashtagP)
+        })}
     
     homepageDiv.append(homePostDiv)
 }
