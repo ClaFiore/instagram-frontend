@@ -2,6 +2,7 @@ let currenUser
 
 const usersUrl = 'http://localhost:3000/api/v1/users/'
 const postsUrl = 'http://localhost:3000/api/v1/posts/'
+const commentsUrl = 'http://localhost:3000/api/v1/comments/'
 
 const backDiv = document.getElementById('background')
 // navigation bar
@@ -109,6 +110,8 @@ function editUser(user){
  // patch request to edit user
 }
 
+
+// HOMEPAGE
 function getPosts(){
     fetch(postsUrl)
     .then(res => res.json())
@@ -152,16 +155,38 @@ function renderPostHome(post){
             hashtagP.innerText = hashtag.name
             homePostDiv.append(hashtagP)
         })}
+
         let addCommentInput = document.createElement('input')
         addCommentInput.className = 'add-new-comment'
         addCommentInput.setAttribute('type', 'text')
         addCommentInput.setAttribute('placeholder', 'Add a comment...')
-        // addCommentInput.setAttribute('id', currentUser.id)
+        addCommentInput.setAttribute('id', currentUser.id)
+        addCommentInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                let content = addCommentInput.value
+                    
+                configObj = {method: 'POST', 
+                            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                            body: JSON.stringify({content, user_id: currentUser.id, post_id: post.id})}
+                    
+                fetch(commentsUrl, configObj)
+                .then(res => res.json())
+                .then(newcomment => {
+                    let newCommentP = document.createElement('p')
+                    newCommentP.innerHTML = `<strong>${newcomment.user.username}: </strong> ${newcomment.content}`
+                    homePostDiv.insertBefore(newCommentP, addCommentInput)
+                    addCommentInput.value = ''
+                })
+            }
+        });
     
         homePostDiv.append(addCommentInput)
     
     homepageContainerDiv.append(homePostDiv)
 }
+
+
+// ADD A COMMENT
 
 
 //signup - create new user
