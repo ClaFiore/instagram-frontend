@@ -8,17 +8,19 @@ const backDiv = document.getElementById('background')
 const navBarDiv = document.getElementById('nav-bar')
 const searchBar = document.querySelector('input.search-bar')
 const homeIconImg = document.querySelector('img.home-icon')
+    homeIconImg.addEventListener('click', () => getPosts())
+const userIcon = document.querySelector('img.user-icon')
+    userIcon.addEventListener('click', () => displayUserProfile(currentUser))
 
 // intro to signup or login
-const homeDiv = document.createElement('div')   
-        homeDiv.className = 'intro'
-const signupBtn = document.createElement('button')      //signup button
-        signupBtn.setAttribute('id', 'signup-btn')
-const loginForm = document.createElement('form')
-        loginForm.setAttribute('id', 'login-form')     //login form
+const loginDiv = document.getElementById('login')
+const loginSignupDiv = document.getElementById('login-signup')
+const loginForm = document.getElementById('login-form')    //login form
+
+const signupBtn = document.getElementById('signup-btn')      //signup button
+        
 const divSignupModal = document.getElementById('signup-modal')
 const br = document.createElement('br')
-    loginForm.addEventListener('submit', loginFunct)    //add event listener for login form
     signupBtn.addEventListener('click', signupFunct)    //add event listener for signup btn
 const signupForm = document.createElement('form')       //signup form
         signupForm.className ='signup-form'
@@ -37,27 +39,132 @@ const spanCloseModal = document.createElement('span')
 const navBar = document.querySelector('nav.nav-bar')
 const containerDiv = document.querySelector('div.container')
 
-//user profile
-const profileContainer = document.createElement('div')
-    profileContainer.className = 'container'
-const profilePic = document.createElement('img')
-    profilePic.className= 'profile-pic'
-const profileUsername = document.createElement('h2')
-const profileName = document.createElement('h3')
-const editUserBtn = document.createElement('button')
-    editUserBtn.className = 'edit-user-btn'
-const bioUser = document.createElement('h4')
-
-//homepage
-const homepageDiv = document.querySelector('div.homepage')
 
 
 // login
-function loginFunct() {
+loginForm.addEventListener('submit', () => {
     event.preventDefault()
-    // code here
-    displayUserProfile(user)
+    
+    fetch(usersUrl)
+    .then(res=>res.json())
+    .then(users => users.forEach(user => {
+        if (loginForm.children[0].value === user.username && loginForm.children[3].value === user.password)
+            { currentUser = user
+            console.log(currentUser)
+            loginDiv.style.display = 'none'
+            displayUserProfile(currentUser)
+        }
+    }))
+    
+})
+
+
+//user profile
+
+const profileDiv = document.getElementById('profile')
+
+function displayUserProfile(user){
+    loginSignupDiv.innerHTML = ''
+    homepageContainerDiv.innerHTML = ''
+    homeIconImg.style.display = 'inline-block'
+    searchBar.style.display = 'inline-block'
+    userIcon.src = user.profilepic
+
+    const profileContainer = document.createElement('div')
+        profileContainer.className = 'container'
+        profileDiv.append(profileContainer)
+    
+    const picDiv = document.createElement('div')
+    const profilePic = document.createElement('img')
+        profilePic.className= 'profile-pic'
+        profilePic.src = user.profilepic  
+        picDiv.append(profilePic)    
+    const profileUsername = document.createElement('h2')
+        profileUsername.innerText = user.username
+    const profileName = document.createElement('h3')
+        profileName.innerText = user.name
+    
+    const editDiv = document.createElement('div')
+        editDiv.className = 'edit-user-btn-div'
+    const editUserBtn = document.createElement('button')
+        editUserBtn.className = 'edit-user-btn'
+        editUserBtn.innerText = 'Edit'
+        editDiv.append(editUserBtn)
+    
+    const bioUser = document.createElement('p')
+        bioUser.innerText = user.bio
+    
+    profileContainer.append(picDiv, profileName, editDiv, profileUsername, profileName, bioUser)
+    
+    
+    // editUserBtn.addEventListener('click', editUser(user))
+    // user.posts.forEach(post => displayUserPost(post))
 }
+
+function displayUserPost(post){
+    //posts
+}
+
+function editUser(user){
+ // patch request to edit user
+}
+
+function getPosts(){
+    fetch(postsUrl)
+    .then(res => res.json())
+    .then(postsArray => postsArray.forEach(post => renderPostHome(post)))
+}
+
+const homepageContainerDiv = document.getElementById('homepage-container')
+
+function renderPostHome(post){
+    profileDiv.innerHTML = ''
+    homepageContainerDiv.style.display = ''
+
+    const homePostDiv = document.createElement('div')
+        homePostDiv.className = 'home-post'
+    const h3username = document.createElement('h3')
+        h3username.innerText = post.user.username
+    const captionP = document.createElement('p')
+        captionP.innerText = post.caption
+    const postImgDiv = document.createElement('div')
+        postImgDiv.className = 'home-post-img-div'
+    const postImage = document.createElement('img')
+        postImage.className = 'post-image'
+        postImage.src = post.image
+    postImgDiv.append(postImage)
+
+    const likeBtn = document.createElement('button')
+        likeBtn.innerText = '❤️ ' + post.likes
+        likeBtn.className = 'heart-btn'
+
+    homePostDiv.append(h3username, postImgDiv, likeBtn, captionP)
+
+    if (post.comments.length > 0) {
+    post.comments.forEach(comment => {
+        let commentP = document.createElement('p')
+        fetch(usersUrl + comment.user_id)
+        .then(res=>res.json())
+        .then(commenter => commentP.innerHTML = `<strong>${commenter.username}: </strong> ${comment.content}`)
+        homePostDiv.append(commentP)
+    })}
+    if (post.hashtags.length > 0) {
+        post.hashtags.forEach(hashtag => {
+            let hashtagP = document.createElement('p')
+            hashtagP.innerText = hashtag.name
+            homePostDiv.append(hashtagP)
+        })}
+        let addCommentInput = document.createElement('input')
+        addCommentInput.className = 'add-new-comment'
+        addCommentInput.setAttribute('type', 'text')
+        addCommentInput.setAttribute('placeholder', 'Add a comment...')
+        // addCommentInput.setAttribute('id', currentUser.id)
+    
+        homePostDiv.append(addCommentInput)
+    
+    homepageContainerDiv.append(homePostDiv)
+}
+
 
 //signup - create new user
 function signupFunct(){
@@ -98,80 +205,4 @@ function signupFunct(){
 
 function closeSignUp(){
     signupModal.remove()
-}
-
-//user profile
-function displayUserProfile(user){
-    homeDiv.innerHTML = ''
-    navBar.append(searchBar, homeImg)
-    
-    profilePic.src = user.profilepic      //add profilepic attribute to User model!
-    profileUsername.innerText = user.username
-    profileName.innerText = user.name
-    bioUser.innerText = user.bio
-    
-    containerDiv.append(profilePic, editUserBtn, profileUsername, profileName, bioUser)
-    homeDiv.append(containerDiv)
-    
-    editUserBtn.addEventListener('click', editUser(user))
-    user.posts.forEach(post => displayUserPost(post))
-}
-
-function displayUserPost(post){
-    //posts
-}
-
-function editUser(user){
- // patch request to edit user
-}
-
-//homepage
-homepagePosts()
-function homepagePosts(){
-    fetch(postsUrl)
-    .then(res => res.json())
-    .then(postsArray => postsArray.forEach(post => renderPostHome(post)))
-}
-
-function renderPostHome(post){
-    const homePostDiv = document.createElement('div')
-        homePostDiv.className = 'home-post'
-    const h3username = document.createElement('h3')
-        h3username.innerText = post.user.username
-    const captionP = document.createElement('p')
-        captionP.innerText = post.caption
-    const postImgDiv = document.createElement('div')
-        postImgDiv.className = 'home-post-img-div'
-    const postImage = document.createElement('img')
-        postImage.className = 'post-image'
-        postImage.src = post.image
-    postImgDiv.append(postImage)
-
-    const likeBtn = document.createElement('button')
-        likeBtn.innerText = '❤️ ' + post.likes
-        likeBtn.className = 'heart-btn'
-
-    homePostDiv.append(h3username, postImgDiv, likeBtn, captionP)
-    if (post.comments.length > 0) {
-    post.comments.forEach(comment => {
-        let commentP = document.createElement('p')
-        fetch(usersUrl + comment.user_id)
-        .then(res=>res.json())
-        .then(commenter => commentP.innerHTML = `<strong>${commenter.username}: </strong> ${comment.content}`)
-        homePostDiv.append(commentP)
-    })}
-    if (post.hashtags.length > 0) {
-        post.hashtags.forEach(hashtag => {
-            let hashtagP = document.createElement('p')
-            hashtagP.innerText = hashtag.name
-            homePostDiv.append(hashtagP)
-        })}
-        let addCommentInput = document.createElement('input')
-        addCommentInput.className = 'add-new-comment'
-        addCommentInput.setAttribute('type', 'text')
-        addCommentInput.setAttribute('placeholder', 'Add a comment...')
-        // addCommentInput.setAttribute('id', currentUser.id)
-    homePostDiv.append(addCommentInput)
-    homepageDiv.append(homePostDiv)
-    backDiv.append(homepageDiv)
 }
