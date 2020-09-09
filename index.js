@@ -143,9 +143,7 @@ function renderPostHome(post){
     if (post.comments.length > 0) {
     post.comments.forEach(comment => {
         let commentP = document.createElement('p')
-        fetch(usersUrl + comment.user_id)
-        .then(res=>res.json())
-        .then(commenter => commentP.innerHTML = `<strong>${commenter.username}: </strong> ${comment.content}`)
+        commentP.innerHTML = `<strong>${comment.user.username}: </strong> ${comment.content}`
         homePostDiv.append(commentP)
     })}
     if (post.hashtags.length > 0) {
