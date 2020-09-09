@@ -1,6 +1,9 @@
-const usersUrl = 'http://localhost:3000/api/v1/users'
-const postsUrl = 'http://localhost:3000/api/v1/posts'
+let currenUser
 
+const usersUrl = 'http://localhost:3000/api/v1/users/'
+const postsUrl = 'http://localhost:3000/api/v1/posts/'
+
+const backDiv = document.getElementById('background')
 // navigation bar
 const navBarDiv = document.getElementById('nav-bar')
 const searchBar = document.querySelector('input.search-bar')
@@ -143,26 +146,32 @@ function renderPostHome(post){
         postImage.className = 'post-image'
         postImage.src = post.image
     postImgDiv.append(postImage)
-    
+
     const likeBtn = document.createElement('button')
         likeBtn.innerText = '❤️ ' + post.likes
         likeBtn.className = 'heart-btn'
-    
+
     homePostDiv.append(h3username, postImgDiv, likeBtn, captionP)
-    
     if (post.comments.length > 0) {
     post.comments.forEach(comment => {
         let commentP = document.createElement('p')
-        commentP.innerText = comment.user.username + ': ' + comment.content
+        fetch(usersUrl + comment.user_id)
+        .then(res=>res.json())
+        .then(commenter => commentP.innerHTML = `<strong>${commenter.username}: </strong> ${comment.content}`)
         homePostDiv.append(commentP)
     })}
-
     if (post.hashtags.length > 0) {
         post.hashtags.forEach(hashtag => {
             let hashtagP = document.createElement('p')
             hashtagP.innerText = hashtag.name
             homePostDiv.append(hashtagP)
         })}
-    
+        let addCommentInput = document.createElement('input')
+        addCommentInput.className = 'add-new-comment'
+        addCommentInput.setAttribute('type', 'text')
+        addCommentInput.setAttribute('placeholder', 'Add a comment...')
+        // addCommentInput.setAttribute('id', currentUser.id)
+    homePostDiv.append(addCommentInput)
     homepageDiv.append(homePostDiv)
+    backDiv.append(homepageDiv)
 }
