@@ -136,12 +136,19 @@ function renderPostHome(post){
         postImage.className = 'post-image'
         postImage.src = post.image
     postImgDiv.append(postImage)
-
+    
+    const likeBtnDiv = document.createElement('div')
     const likeBtn = document.createElement('button')
-        likeBtn.innerText = '❤️ ' + post.likes
+        likeBtn.innerText = '❤️' 
         likeBtn.className = 'heart-btn'
+        likeBtn.addEventListener('click', () => likeOrUnlikeAPost(post, likeBtn))
+        likeBtnDiv.append(likeBtn)
+    const likesCount = document.createElement('p')
+        likesCount.className = 'likes-count'
+        likesCount.innerText = post.likes
+        likeBtnDiv.append(likesCount)
 
-    homePostDiv.append(h3username, postImgDiv, likeBtn, captionP)
+    homePostDiv.append(h3username, postImgDiv, likeBtnDiv, captionP)
 
     if (post.comments.length > 0) {
     post.comments.forEach(comment => {
@@ -149,12 +156,12 @@ function renderPostHome(post){
         commentP.innerHTML = `<strong>${comment.user.username}: </strong> ${comment.content}`
         homePostDiv.append(commentP)
     })}
-    if (post.hashtags.length > 0) {
-        post.hashtags.forEach(hashtag => {
-            let hashtagP = document.createElement('p')
-            hashtagP.innerText = hashtag.name
-            homePostDiv.append(hashtagP)
-        })}
+    // if (post.hashtags.length > 0) {
+    //     post.hashtags.forEach(hashtag => {
+    //         let hashtagP = document.createElement('p')
+    //         hashtagP.innerText = hashtag.name
+    //         homePostDiv.append(hashtagP)
+    //     })}
 
         let addCommentInput = document.createElement('input')
         addCommentInput.className = 'add-new-comment'
@@ -185,8 +192,16 @@ function renderPostHome(post){
     homepageContainerDiv.append(homePostDiv)
 }
 
-
-// ADD A COMMENT
+function likeOrUnlikeAPost(post, likeBtn){
+    if (likeBtn.innerText === '❤️'){
+        likeBtn.innerText = '♡'
+        console.log('lost a like')
+    }
+    else if (likeBtn.innerText === '♡'){
+        likeBtn.innerText = '❤️'
+        console.log('new like')
+    }
+}
 
 
 //signup - create new user

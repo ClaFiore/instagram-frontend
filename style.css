@@ -104,16 +104,21 @@ body {
 }
 
 .heart-btn{
-  margin: 10px;
+  /* margin: 10px; */
   position: relative;
   background-color: white;
-  border: solid 1px #C13584;
+  border: solid 1px white; 
   border-radius: 5px;
   height: auto;
   width: max-content;
-  color: #C13584;
+  display:inline-block;
   font-size: 18px;
   justify-self: center;
+}
+
+.likes-count{
+  display:inline-block;
+  position: relative;
 }
 
 .add-new-comment{
