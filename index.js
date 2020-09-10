@@ -139,13 +139,24 @@ function renderPostHome(post){
     
     const likeBtnDiv = document.createElement('div')
     const likeBtn = document.createElement('button')
-        likeBtn.innerText = '❤️' 
+
+    if (post.likes.length > 0){
+        let bool = post.likes.some(like => (like.user.id === currentUser.id))
+        // console.log(bool)
+            if (bool)
+            likeBtn.innerText = '❤️'
+            else
+            likeBtn.innerText = '♡'
+            }
+    else
+        likeBtn.innerText = '♡'
+  
         likeBtn.className = 'heart-btn'
         likeBtn.addEventListener('click', () => likeOrUnlikeAPost(post, likeBtn))
         likeBtnDiv.append(likeBtn)
     const likesCount = document.createElement('p')
         likesCount.className = 'likes-count'
-        likesCount.innerText = post.likes
+        likesCount.innerText = post.likes.length
         likeBtnDiv.append(likesCount)
 
     homePostDiv.append(h3username, postImgDiv, likeBtnDiv, captionP)
