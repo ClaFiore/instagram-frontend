@@ -1,5 +1,6 @@
-let currenUser
+let currentUser
 
+const likesURL = 'http://localhost:3000/api/v1/likes/'
 const usersUrl = 'http://localhost:3000/api/v1/users/'
 const postsUrl = 'http://localhost:3000/api/v1/posts/'
 const commentsUrl = 'http://localhost:3000/api/v1/comments/'
@@ -152,7 +153,7 @@ function renderPostHome(post){
         likeBtn.innerText = '♡'
   
         likeBtn.className = 'heart-btn'
-        likeBtn.addEventListener('click', () => likeOrUnlikeAPost(post, likeBtn))
+        likeBtn.addEventListener('click', () => likeOrUnlikeAPost(post, likeBtn, likesCount))
         likeBtnDiv.append(likeBtn)
     const likesCount = document.createElement('p')
         likesCount.className = 'likes-count'
@@ -203,15 +204,27 @@ function renderPostHome(post){
     homepageContainerDiv.append(homePostDiv)
 }
 
-function likeOrUnlikeAPost(post, likeBtn){
-    if (likeBtn.innerText === '❤️'){
-        likeBtn.innerText = '♡'
-        console.log('lost a like')
-    }
-    else if (likeBtn.innerText === '♡'){
-        likeBtn.innerText = '❤️'
-        console.log('new like')
-    }
+function likeOrUnlikeAPost(post, likeBtn, likesCount){
+    fetch(postsUrl + post.id)
+    .then(res => res.json())
+    .then(post => {
+        if (likeBtn.innerText === '❤️'){
+            likeBtn.innerText = '♡'
+            let likeObj = post.likes.find(likeObj => likeObj.user_id === currentUser.id)
+            fetch(likesURL + likeObj.id, {method: 'DELETE'})
+            .then(() => likesCount.innerText = post.likes.length)
+        }
+        else if (likeBtn.innerText === '♡'){
+            likeBtn.innerText = '❤️'
+            configObj = { method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                          body: JSON.stringify({post_id: post.id, user_id: currentUser.id})
+                        }
+            fetch(likesURL, configObj)
+            .then(res => res.json())
+            .then(likeObj => likesCount.innerText = likeObj.post.likes.length)
+        }
+    })
+    
 }
 
 
