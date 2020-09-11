@@ -15,6 +15,7 @@ const searchBar = document.querySelector('input.search-bar')
 const homeIconImg = document.querySelector('img.home-icon')
     homeIconImg.addEventListener('click', () => getPosts())
 const userIcon = document.querySelector('img.user-icon')
+    
     userIcon.addEventListener('click', () => displayUserProfile(currentUser))
 
 // intro to signup or login
@@ -56,6 +57,7 @@ loginForm.addEventListener('submit', () => {
         if (loginForm.children[0].value === user.username && loginForm.children[3].value === user.password)
             { currentUser = user
             console.log(currentUser)
+            userIcon.src = currentUser.profilepic
             loginDiv.style.display = 'none'
             displayUserProfile(currentUser)
         }
@@ -73,8 +75,8 @@ function displayUserProfile(user){
     homepageContainerDiv.innerHTML = ''
     homeIconImg.style.display = 'inline-block'
     searchBar.style.display = 'inline-block'
-    userIcon.src = user.profilepic
-
+    
+console.log(user.posts)
     const profileContainer = document.createElement('div')
         profileContainer.className = 'container'
         profileDiv.append(profileContainer)
@@ -89,30 +91,28 @@ function displayUserProfile(user){
     const profileName = document.createElement('h3')
         profileName.innerText = user.name
     
-    const editDiv = document.createElement('div')
-        editDiv.className = 'edit-user-btn-div'
-    const editUserBtn = document.createElement('button')
-        editUserBtn.className = 'edit-user-btn'
-        editUserBtn.innerText = 'Edit'
-        editDiv.append(editUserBtn)
+        if (user === currentUser){
+            const editDiv = document.createElement('div')
+            editDiv.className = 'edit-user-btn-div'
+            const editUserBtn = document.createElement('button')
+            editUserBtn.className = 'edit-user-btn'
+            editUserBtn.innerText = 'Edit'
+            editDiv.append(editUserBtn)
+            profileContainer.append(editDiv)}
     
     const bioUser = document.createElement('p')
         bioUser.innerText = user.bio
     
-    profileContainer.append(picDiv, profileName, editDiv, profileUsername, profileName, bioUser)
+    profileContainer.append(picDiv, profileName, profileUsername, profileName, bioUser)
     
     let profilePostOuterDiv = document.createElement('div')
     profilePostOuterDiv.className = 'profile-post-outer-div'
     profileDiv.append(profilePostOuterDiv)
-
     // editUserBtn.addEventListener('click', editUser(user))
     user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
-    
-    
 }
 
 function displayUserPost(post, profilePostOuterDiv){
-    
     let singlePostDiv = document.createElement('div')
     singlePostDiv.className = 'single-post-div'
     profilePostOuterDiv.append(singlePostDiv)
@@ -126,7 +126,6 @@ function displayUserPost(post, profilePostOuterDiv){
     image.src = post.image
     // image.style.width = 10%
     imagePostDiv.append(image)
-
 }
 
 function editUser(user){
@@ -134,13 +133,14 @@ function editUser(user){
 }
 
 
-// HOMEPAGE
+
+// HOMEPAGE //
+
 function getPosts(){
     fetch(postsUrl)
     .then(res => res.json())
     .then(postsArray => postsArray.forEach(post => renderPostHome(post)))
 }
-
 
 
 function renderPostHome(post){
@@ -151,6 +151,7 @@ function renderPostHome(post){
         homePostDiv.className = 'home-post'
     const h3username = document.createElement('h3')
         h3username.innerText = post.user.username
+        h3username.addEventListener('click', () => displayUserProfile(post.user))
     const captionP = document.createElement('p')
         captionP.innerText = post.caption
     const postImgDiv = document.createElement('div')
@@ -171,8 +172,8 @@ function renderPostHome(post){
             else
             likeBtn.innerText = '♡'
             }
-    else
-        likeBtn.innerText = '♡'
+    else{
+        likeBtn.innerText = '♡'}
   
         likeBtn.className = 'heart-btn'
         likeBtn.addEventListener('click', () => likeOrUnlikeAPost(post, likeBtn, likesCount))
@@ -234,21 +235,31 @@ function likeOrUnlikeAPost(post, likeBtn, likesCount){
             likeBtn.innerText = '♡'
             let likeObj = post.likes.find(likeObj => likeObj.user_id === currentUser.id)
             fetch(likesURL + likeObj.id, {method: 'DELETE'})
-            .then(() => likesCount.innerText = post.likes.length)
+            .then(() => {
+                fetch(postsUrl + post.id)
+                    .then(res => res.json())
+                    .then(updatedPost => {
+                    likesCount.innerText = updatedPost.likes.length
+                    })
+            })
         }
         else if (likeBtn.innerText === '♡'){
-            likeBtn.innerText = '❤️'
-            configObj = { method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-                          body: JSON.stringify({post_id: post.id, user_id: currentUser.id})
-                        }
-            fetch(likesURL, configObj)
-            .then(res => res.json())
-            .then(likeObj => likesCount.innerText = likeObj.post.likes.length)
+                likeBtn.innerText = '❤️'
+                configObj = { method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                            body: JSON.stringify({post_id: post.id, user_id: currentUser.id})
+                            }
+                fetch(likesURL, configObj)
+                .then(res => res.json())
+                .then(likeObj => {
+                    fetch(postsUrl + post.id)
+                    .then(res => res.json())
+                    .then(updatedPost => {
+                    likesCount.innerText = updatedPost.likes.length
+                    })    
+            })
         }
     })
-    
 }
-
 
 //signup - create new user
 function signupFunct(){
