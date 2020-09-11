@@ -7,6 +7,8 @@ const commentsUrl = 'http://localhost:3000/api/v1/comments/'
 
 const backDiv = document.getElementById('background')
 const homepageContainerDiv = document.getElementById('homepage-container')
+const profileDiv = document.getElementById('profile')
+
 // navigation bar
 const navBarDiv = document.getElementById('nav-bar')
 const searchBar = document.querySelector('input.search-bar')
@@ -64,7 +66,7 @@ loginForm.addEventListener('submit', () => {
 
 //user profile
 
-const profileDiv = document.getElementById('profile')
+
 
 function displayUserProfile(user){
     loginSignupDiv.innerHTML = ''
@@ -99,13 +101,32 @@ function displayUserProfile(user){
     
     profileContainer.append(picDiv, profileName, editDiv, profileUsername, profileName, bioUser)
     
-    
+    let profilePostOuterDiv = document.createElement('div')
+    profilePostOuterDiv.className = 'profile-post-outer-div'
+    profileDiv.append(profilePostOuterDiv)
+
     // editUserBtn.addEventListener('click', editUser(user))
-    // user.posts.forEach(post => displayUserPost(post))
+    user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
+    
+    
 }
 
-function displayUserPost(post){
-    //posts
+function displayUserPost(post, profilePostOuterDiv){
+    
+    let singlePostDiv = document.createElement('div')
+    singlePostDiv.className = 'single-post-div'
+    profilePostOuterDiv.append(singlePostDiv)
+
+    let imagePostDiv = document.createElement('div')
+    imagePostDiv.className = 'profile-post-image'
+    singlePostDiv.append(imagePostDiv)
+
+    let image = document.createElement('img')
+    image.className = 'profile-user-post-image'
+    image.src = post.image
+    // image.style.width = 10%
+    imagePostDiv.append(image)
+
 }
 
 function editUser(user){
