@@ -6,6 +6,7 @@ const postsUrl = 'http://localhost:3000/api/v1/posts/'
 const commentsUrl = 'http://localhost:3000/api/v1/comments/'
 
 const backDiv = document.getElementById('background')
+const homepageContainerDiv = document.getElementById('homepage-container')
 // navigation bar
 const navBarDiv = document.getElementById('nav-bar')
 const searchBar = document.querySelector('input.search-bar')
@@ -119,11 +120,11 @@ function getPosts(){
     .then(postsArray => postsArray.forEach(post => renderPostHome(post)))
 }
 
-const homepageContainerDiv = document.getElementById('homepage-container')
+
 
 function renderPostHome(post){
     profileDiv.innerHTML = ''
-    homepageContainerDiv.style.display = ''
+    homepageContainerDiv.style.display = 'block'
 
     const homePostDiv = document.createElement('div')
         homePostDiv.className = 'home-post'
