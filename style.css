@@ -118,6 +118,18 @@ body {
   height: 30px;
 }
 
+.profile-pic-post-div{
+  /* float: left; */
+  display: inline;
+}
+
+.profile-pic-post-img{
+  height: 5%;
+  float: left;
+  overflow: auto;
+  display: block;
+  border-radius: 50%;
+}
 
 /* user profile top-part with profile image, username, bio */
 
@@ -146,6 +158,7 @@ body {
 }
 
 /* intro login-signup */
+
 .card {
     /* Add shadows to create the "card" effect */
     /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -283,6 +296,7 @@ body {
   overflow: hidden;
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .profile-user-post-image{
@@ -291,4 +305,11 @@ body {
   width: auto;
   height: 200px;
   overflow: hidden;
+
+  position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    margin: auto;
 }

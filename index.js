@@ -149,6 +149,13 @@ function renderPostHome(post){
 
     const homePostDiv = document.createElement('div')
         homePostDiv.className = 'home-post'
+    const profilePicIconPostDiv = document.createElement('div')
+        profilePicIconPostDiv.className = 'profile-pic-post-div'
+        homePostDiv.append(profilePicIconPostDiv)
+    const profilePicPostImg = document.createElement('img')
+        profilePicPostImg.className = 'profile-pic-post-img'
+        profilePicPostImg.src = post.user.profilepic
+        profilePicIconPostDiv.append(profilePicPostImg)
     const h3username = document.createElement('h3')
         h3username.innerText = post.user.username
         h3username.addEventListener('click', () => displayUserProfile(post.user))
