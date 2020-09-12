@@ -249,6 +249,13 @@ body {
   margin: 10px;
 }
 
+.follow-btn{
+  background-color: #405DE6;
+  color: white;
+  border-radius: 20px;
+  border: none;
+}
+
 .profile-pic{
   display: block;
   float: left;

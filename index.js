@@ -4,6 +4,7 @@ const likesURL = 'http://localhost:3000/api/v1/likes/'
 const usersUrl = 'http://localhost:3000/api/v1/users/'
 const postsUrl = 'http://localhost:3000/api/v1/posts/'
 const commentsUrl = 'http://localhost:3000/api/v1/comments/'
+const followsUrl = 'http://localhost:3000/api/v1/follows/'
 
 const backDiv = document.getElementById('background')
 const homepageContainerDiv = document.getElementById('homepage-container')
@@ -75,8 +76,10 @@ function displayUserProfile(user){
     homepageContainerDiv.innerHTML = ''
     homeIconImg.style.display = 'inline-block'
     searchBar.style.display = 'inline-block'
+    profileDiv.innerHTML = ''
     
-console.log(user.posts)
+    
+// console.log(user.posts)
     const profileContainer = document.createElement('div')
         profileContainer.className = 'container'
         profileDiv.append(profileContainer)
@@ -99,6 +102,20 @@ console.log(user.posts)
             editUserBtn.innerText = 'Edit'
             editDiv.append(editUserBtn)
             profileContainer.append(editDiv)}
+        else
+            { const followDiv = document.createElement('div')
+            followDiv.className = 'edit-user-btn-div'
+            const followBtn = document.createElement('button')
+            followBtn.className = 'follow-btn'
+            followDiv.append(followBtn)
+            profileContainer.append(followDiv)
+            if (user.followers.some(follower => follower.id === currentUser.id))
+                {followBtn.innerText = 'Following'
+                followBtn.addEventListener('click', ()=> unfollow(user, followBtn))}
+            else 
+                {followBtn.innerText = 'Follow'
+                followBtn.addEventListener('click', ()=> follow(user, followBtn))}
+            }
     
     const bioUser = document.createElement('p')
         bioUser.innerText = user.bio
@@ -110,6 +127,27 @@ console.log(user.posts)
     profileDiv.append(profilePostOuterDiv)
     // editUserBtn.addEventListener('click', editUser(user))
     user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
+}
+
+function follow(user, followBtn){
+    configObj = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: JSON.stringify({follower_id: currentUser.id, followee_id: user.id})
+    }
+    fetch(followsUrl, configObj)
+    .then(res => res.json())
+    .then(newfollow => followBtn.innerText = 'Following')
+}
+
+function unfollow(user, followBtn){
+    fetch(followsUrl)
+    .then(res => res.json())
+    .then(allFollowObjs => {
+        let followObject = allFollowObjs.find(followObj => followObj.follower_id === currentUser.id && followObj.followee_id === user.id)
+        fetch(followsUrl + followObject.id, {method: 'DELETE'})
+        .then(() => followBtn.innerText = 'Follow')
+    })
 }
 
 function displayUserPost(post, profilePostOuterDiv){
