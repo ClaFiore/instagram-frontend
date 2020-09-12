@@ -242,6 +242,9 @@ body {
   border-color: #C13584;
 }
 
+.bio-user{
+  margin: 0 0 20px 138px;
+}
 
 .edit-user-btn-div{
   float: right;
@@ -254,6 +257,15 @@ body {
   color: white;
   border-radius: 20px;
   border: none;
+}
+
+.post-and-follows-count-div{
+  display: block;
+}
+
+.count-span{
+display: inline-block;
+margin: 0 20px 0 0;
 }
 
 .profile-pic{

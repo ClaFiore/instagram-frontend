@@ -67,8 +67,7 @@ loginForm.addEventListener('submit', () => {
 })
 
 
-//user profile
-
+//USER PROFILE //
 
 
 function displayUserProfile(user){
@@ -77,9 +76,7 @@ function displayUserProfile(user){
     homeIconImg.style.display = 'inline-block'
     searchBar.style.display = 'inline-block'
     profileDiv.innerHTML = ''
-    
-    
-// console.log(user.posts)
+
     const profileContainer = document.createElement('div')
         profileContainer.className = 'container'
         profileDiv.append(profileContainer)
@@ -111,16 +108,29 @@ function displayUserProfile(user){
             profileContainer.append(followDiv)
             if (user.followers.some(follower => follower.id === currentUser.id))
                 {followBtn.innerText = 'Following'
-                followBtn.addEventListener('click', ()=> unfollow(user, followBtn))}
+                followBtn.addEventListener('click', ()=> unfollow(user, followBtn, followersSpan))}
             else 
                 {followBtn.innerText = 'Follow'
-                followBtn.addEventListener('click', ()=> follow(user, followBtn))}
+                followBtn.addEventListener('click', ()=> follow(user, followBtn, followersSpan))}
             }
     
     const bioUser = document.createElement('p')
         bioUser.innerText = user.bio
+        bioUser.className = 'bio-user'
+    const postAndFollowsCountDiv = document.createElement('div')
+            postAndFollowsCountDiv.className = 'post-and-follows-count-div'
+    const postCountSpan = document.createElement('span')
+            postCountSpan.className = 'count-span'
+            postCountSpan.innerText = user.posts.length + ' posts'
+    const followersSpan = document.createElement('span')
+            followersSpan.className = 'count-span'
+            followersSpan.innerText = user.followers.length + ' followers'
+    const followeesSpan = document.createElement('span') 
+            followeesSpan.className = 'count-span'
+            followeesSpan.innerText = user.followees.length + ' following'
+    postAndFollowsCountDiv.append(postCountSpan, followersSpan, followeesSpan)
     
-    profileContainer.append(picDiv, profileName, profileUsername, profileName, bioUser)
+    profileContainer.append(picDiv, profileUsername, postAndFollowsCountDiv, profileName, bioUser)
     
     let profilePostOuterDiv = document.createElement('div')
     profilePostOuterDiv.className = 'profile-post-outer-div'
@@ -129,24 +139,34 @@ function displayUserProfile(user){
     user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
 }
 
-function follow(user, followBtn){
+function follow(user, followBtn, followersSpan){
     configObj = {
         method: 'POST',
         headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
         body: JSON.stringify({follower_id: currentUser.id, followee_id: user.id})
-    }
+        }
     fetch(followsUrl, configObj)
     .then(res => res.json())
-    .then(newfollow => followBtn.innerText = 'Following')
+    .then(newfollow => {
+        followBtn.innerText = 'Following'
+        fetch(usersUrl + user.id)
+        .then(res => res.json())
+        .then(updatedUser => followersSpan.innerText = updatedUser.followers.length + ' followers')
+    })
 }
 
-function unfollow(user, followBtn){
+function unfollow(user, followBtn, followersSpan){
     fetch(followsUrl)
     .then(res => res.json())
     .then(allFollowObjs => {
         let followObject = allFollowObjs.find(followObj => followObj.follower_id === currentUser.id && followObj.followee_id === user.id)
         fetch(followsUrl + followObject.id, {method: 'DELETE'})
-        .then(() => followBtn.innerText = 'Follow')
+        .then(() => {
+            followBtn.innerText = 'Follow'
+            fetch(usersUrl + user.id)
+            .then(res => res.json())
+            .then(updatedUser => followersSpan.innerText = updatedUser.followers.length + ' followers')
+        })
     })
 }
 
@@ -230,20 +250,14 @@ function renderPostHome(post){
 
     homePostDiv.append(h3username, postImgDiv, likeBtnDiv, captionP)
 
-    if (post.comments.length > 0) {
-    post.comments.forEach(comment => {
-        let commentP = document.createElement('p')
-        commentP.innerHTML = `<strong>${comment.user.username}: </strong> ${comment.content}`
-        homePostDiv.append(commentP)
-    })}
-    // if (post.hashtags.length > 0) {
-    //     post.hashtags.forEach(hashtag => {
-    //         let hashtagP = document.createElement('p')
-    //         hashtagP.innerText = hashtag.name
-    //         homePostDiv.append(hashtagP)
-    //     })}
-
-        let addCommentInput = document.createElement('input')
+        if (post.comments.length > 0) {
+        post.comments.forEach(comment => {
+            let commentP = document.createElement('p')
+            commentP.innerHTML = `<strong>${comment.user.username}: </strong> ${comment.content}`
+            homePostDiv.append(commentP)
+        })}
+    
+    let addCommentInput = document.createElement('input')
         addCommentInput.className = 'add-new-comment'
         addCommentInput.setAttribute('type', 'text')
         addCommentInput.setAttribute('placeholder', 'Add a comment...')
