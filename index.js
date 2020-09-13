@@ -13,6 +13,18 @@ const profileDiv = document.getElementById('profile')
 // navigation bar
 const navBarDiv = document.getElementById('nav-bar')
 const searchBar = document.querySelector('input.search-bar')
+    searchBar.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            let contentSearchBar = searchBar.value
+            fetch(usersUrl)
+            .then(res => res.json())
+            .then(allUsers => {
+                let searchedUser = allUsers.find((user) => user.username === contentSearchBar)
+                displayUserProfile(searchedUser)
+                searchBar.value = ''
+            })
+        }
+    })
 const homeIconImg = document.querySelector('img.home-icon')
     homeIconImg.addEventListener('click', () => getPosts())
 const userIcon = document.querySelector('img.user-icon')
@@ -60,6 +72,7 @@ loginForm.addEventListener('submit', () => {
             console.log(currentUser)
             userIcon.src = currentUser.profilepic
             loginDiv.style.display = 'none'
+            searchBar.style.display = 'inline-block'
             displayUserProfile(currentUser)
         }
     }))
@@ -197,7 +210,20 @@ function editUser(user){
 function getPosts(){
     fetch(postsUrl)
     .then(res => res.json())
-    .then(postsArray => postsArray.forEach(post => renderPostHome(post)))
+    .then(postsArray => {
+        postsArray.sort(function(a, b) {
+
+            let keyA = new Date(a.created_at),
+             keyB = new Date(b.created_at);
+            // Compare the 2 dates
+            if (keyA < keyB) return 1;
+            if (keyA > keyB) return -1;
+            return 0;
+          })
+         
+        postsArray.forEach(post => renderPostHome(post))
+    })
+
 }
 
 
@@ -281,7 +307,12 @@ function renderPostHome(post){
             }
         });
     
-        homePostDiv.append(addCommentInput)
+        let timeP = document.createElement('p')
+            timeP.className = 'time'
+            let date = new Date(post.created_at)
+            timeP.innerText = date.toDateString() + ', at ' + date.getHours() + ':' + date.getMinutes()
+
+        homePostDiv.append(timeP, addCommentInput)
     
     homepageContainerDiv.append(homePostDiv)
 }
