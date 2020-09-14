@@ -26,6 +26,14 @@ body {
   float: left;
   overflow: auto;
 }
+.upload-post-icon{
+  height: 5%;
+  float: right;
+  overflow: auto;
+  display: none;
+  padding: 10px;
+}
+
 .home-icon{
   height: 5%;
   float: right;
@@ -51,6 +59,14 @@ body {
   color: black;
   margin: 0 auto;
   border: none;
+}
+
+/* CREATE POST  */
+
+.create-form-div{
+  border: solid 3px blue;
+  background-color: white;
+  
 }
 
 /* homepage */

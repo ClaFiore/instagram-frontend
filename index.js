@@ -25,6 +25,7 @@ const searchBar = document.querySelector('input.search-bar')
             })
         }
     })
+const uploadPostIcon = document.querySelector('img.upload-post-icon')
 const homeIconImg = document.querySelector('img.home-icon')
     homeIconImg.addEventListener('click', () => getPosts())
 const userIcon = document.querySelector('img.user-icon')
@@ -73,6 +74,7 @@ loginForm.addEventListener('submit', () => {
             userIcon.src = currentUser.profilepic
             loginDiv.style.display = 'none'
             searchBar.style.display = 'inline-block'
+            uploadPostIcon.style.display = 'inline-block'
             displayUserProfile(currentUser)
         }
     }))
@@ -88,6 +90,7 @@ function displayUserProfile(user){
     homepageContainerDiv.innerHTML = ''
     homeIconImg.style.display = 'inline-block'
     searchBar.style.display = 'inline-block'
+    uploadPostIcon.style.display = 'inline-block'
     profileDiv.innerHTML = ''
 
     const profileContainer = document.createElement('div')
@@ -201,6 +204,54 @@ function displayUserPost(post, profilePostOuterDiv){
 
 function editUser(user){
  // patch request to edit user
+}
+
+
+// CREATE POST //
+uploadPostIcon.addEventListener('click', () => createPost())
+
+function createPost(){
+    loginSignupDiv.innerHTML = ''
+    homepageContainerDiv.innerHTML = ''
+    profileDiv.innerHTML = ''
+    let createFormDiv = document.createElement('div')
+        createFormDiv.className = 'create-form-div'
+    let createForm = document.createElement('form')
+    let uploadInput = document.createElement('input')
+        uploadInput.setAttribute('type', 'file')
+        uploadInput.setAttribute('accept', 'image/*')
+        uploadInput.setAttribute('name', 'uploadedFile')
+        uploadInput.attributes.required = 'Required'
+    let createCaptionInput = document.createElement('input')
+        createCaptionInput.type = 'text'
+        createCaptionInput.placeholder = 'Caption'
+    let submitCreateInput = document.createElement('input')
+        submitCreateInput.setAttribute('type', 'submit')
+        createForm.append(uploadInput, br, createCaptionInput, br, submitCreateInput)
+    createFormDiv.append(createForm)
+    backDiv.append(createFormDiv)
+
+    createForm.addEventListener('submit', function(e) {
+        e.preventDefault()
+        let file = e.target.uploadedFile.files[0]
+        console.log(file)
+        // let formData = new FormData()
+        // formData.append('file', file)
+        // fetch('http://localhost:3000/upload_files', {
+        //     method: 'POST',
+        //     body: formData
+        // })
+        // .then(resp => resp.json())
+        // .then(data => {
+        //     if (data.errors) {
+        //         alert(data.errors)
+        //     }
+        //     else {
+        //         console.log(data)
+        //     }
+        // })
+     })
+
 }
 
 
