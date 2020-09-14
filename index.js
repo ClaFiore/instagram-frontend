@@ -92,6 +92,7 @@ function displayUserProfile(user){
     searchBar.style.display = 'inline-block'
     uploadPostIcon.style.display = 'inline-block'
     profileDiv.innerHTML = ''
+    createFormDiv.innerHTML = ''
 
     const profileContainer = document.createElement('div')
         profileContainer.className = 'container'
@@ -152,6 +153,18 @@ function displayUserProfile(user){
     profilePostOuterDiv.className = 'profile-post-outer-div'
     profileDiv.append(profilePostOuterDiv)
     // editUserBtn.addEventListener('click', editUser(user))
+
+
+    user.posts.sort(function(a, b) {
+
+        let keyA = new Date(a.created_at),
+         keyB = new Date(b.created_at);
+        // Compare the 2 dates
+        if (keyA < keyB) return 1;
+        if (keyA > keyB) return -1;
+        return 0;
+      })
+
     user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
 }
 
@@ -209,13 +222,14 @@ function editUser(user){
 
 // CREATE POST //
 uploadPostIcon.addEventListener('click', () => createPost())
+let createFormDiv = document.createElement('div')
+    createFormDiv.className = 'create-form-div'
 
 function createPost(){
     loginSignupDiv.innerHTML = ''
     homepageContainerDiv.innerHTML = ''
     profileDiv.innerHTML = ''
-    let createFormDiv = document.createElement('div')
-        createFormDiv.className = 'create-form-div'
+    createFormDiv.innerHTML = ''
     let createForm = document.createElement('form')
         createForm.setAttribute('id', 'create-form')
     let createFormLabel = document.createElement('label')
