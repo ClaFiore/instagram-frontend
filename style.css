@@ -64,9 +64,8 @@ body {
 /* CREATE POST  */
 
 .create-form-div{
-  border: solid 3px blue;
   background-color: white;
-  
+  text-align: center;
 }
 
 /* homepage */

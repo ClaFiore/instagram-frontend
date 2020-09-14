@@ -218,12 +218,16 @@ function createPost(){
         createFormDiv.className = 'create-form-div'
     let createForm = document.createElement('form')
     let uploadInput = document.createElement('input')
-        uploadInput.setAttribute('type', 'file')
-        uploadInput.setAttribute('accept', 'image/*')
-        uploadInput.setAttribute('name', 'uploadedFile')
+        uploadInput.setAttribute('type', 'text')
+        uploadInput.setAttribute('name', 'url')
+        uploadInput.placeholder = 'Image Url'
+        // uploadInput.setAttribute('type', 'file')            //*** UPLOAD FILE ***
+        // uploadInput.setAttribute('accept', 'image/*')
+        // uploadInput.setAttribute('name', 'uploadedFile')
         uploadInput.attributes.required = 'Required'
     let createCaptionInput = document.createElement('input')
         createCaptionInput.type = 'text'
+        createCaptionInput.name = 'caption'
         createCaptionInput.placeholder = 'Caption'
     let submitCreateInput = document.createElement('input')
         submitCreateInput.setAttribute('type', 'submit')
@@ -233,8 +237,20 @@ function createPost(){
 
     createForm.addEventListener('submit', function(e) {
         e.preventDefault()
-        let file = e.target.uploadedFile.files[0]
-        console.log(file)
+        let user_id = currentUser.id
+        let image = e.target.url.value
+        let caption = e.target.caption.value
+        configObj = {method: 'POST', headers: {'Content-Type': 'application/json', Accept: 'application/json'}, body: JSON.stringify({image, caption, user_id})}
+        fetch(postsUrl, configObj)
+        .then(res => res.json())
+        .then(newPost => {
+            createForm.reset()
+            createFormDiv.innerHTML = ''
+            getPosts()
+        })
+        //                  ***** FORMDATA TO UPLOAD FILE - NEED ACTIVE STORAGE   ****
+        // let file = e.target.uploadedFile.files[0]
+        // console.log(file)
         // let formData = new FormData()
         // formData.append('file', file)
         // fetch('http://localhost:3000/upload_files', {
@@ -279,6 +295,7 @@ function getPosts(){
 
 
 function renderPostHome(post){
+    
     profileDiv.innerHTML = ''
     homepageContainerDiv.style.display = 'block'
 
