@@ -217,6 +217,10 @@ function createPost(){
     let createFormDiv = document.createElement('div')
         createFormDiv.className = 'create-form-div'
     let createForm = document.createElement('form')
+        createForm.setAttribute('id', 'create-form')
+    let createFormLabel = document.createElement('label')
+        createFormLabel.setAttribute('for', 'create-form')
+        createFormLabel.innerText = 'Create a Post'
     let uploadInput = document.createElement('input')
         uploadInput.setAttribute('type', 'text')
         uploadInput.setAttribute('name', 'url')
@@ -231,7 +235,7 @@ function createPost(){
         createCaptionInput.placeholder = 'Caption'
     let submitCreateInput = document.createElement('input')
         submitCreateInput.setAttribute('type', 'submit')
-        createForm.append(uploadInput, br, createCaptionInput, br, submitCreateInput)
+        createForm.append(createFormLabel, uploadInput, br, createCaptionInput, br, submitCreateInput)
     createFormDiv.append(createForm)
     backDiv.append(createFormDiv)
 
