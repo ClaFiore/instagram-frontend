@@ -66,6 +66,28 @@ body {
 .create-form-div{
   background-color: white;
   text-align: center;
+  width: 400px;
+  padding: 20px;
+  margin: 0 auto;
+  border-radius: 15px;
+  border: solid 1px #e0e0e0;      /*changed color of border */
+}
+
+.create-form-input{
+  margin: 10px;
+  /* padding: 10px; */
+}
+
+.create-form-submit-btn{
+    background-color: #405DE6; 
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    border-radius: 3px;
 }
 
 /* homepage */
@@ -80,7 +102,7 @@ body {
 
 .home-post{
   text-align: left;
-  border: #C13584 solid 1px;
+  border: #e0e0e0 solid 1px;    /* #C13584 */
   padding: 10px;
   height: 600px;
   margin: 1rem auto;
@@ -127,7 +149,7 @@ body {
 }
 
 .add-new-comment{
-  border: 1px solid #C13584;
+  border: 1px solid #e0e0e0;      /*changed color of border */
   border-radius: 5px;
   width: 100%;
   height: 30px;
@@ -174,7 +196,7 @@ body {
   margin: 10px; */
   border-style: solid;
   border-width: 1px;
-  border-color: #C13584;
+  border-color: #e0e0e0;      /*changed color of border */
 }
 
 /* intro login-signup */
@@ -198,7 +220,7 @@ body {
     margin: -100px 0 0 -150px;
     border-style: solid;
     border-width: 1px;
-    border-color: #C13584;
+    border-color: #e0e0e0;      /*changed color of border */
   }
 
   .login-div {
@@ -259,7 +281,7 @@ body {
   margin: 10px; */
   border-style: solid;
   border-width: 1px;
-  border-color: #C13584;
+  border-color: #e0e0e0;      /*changed color of border */
 }
 
 .bio-user{
@@ -308,7 +330,7 @@ margin: 0 20px 0 0;
   display: inline-grid;
   /* display: flex; */
   margin: 1rem 2rem;
-  box-shadow: 3px 4px #e04b52
+  box-shadow: 3px 4px #e0e0e0;      /*changed color of border */
 }
   
 /* DISPLAY USER POST IN PROFILE */
@@ -324,8 +346,8 @@ margin: 0 20px 0 0;
 .single-post-div{
   float:left;
   margin: 10px;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   border: 1px black;
   display: inline-grid;
 }

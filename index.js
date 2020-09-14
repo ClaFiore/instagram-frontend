@@ -154,9 +154,7 @@ function displayUserProfile(user){
     profileDiv.append(profilePostOuterDiv)
     // editUserBtn.addEventListener('click', editUser(user))
 
-
     user.posts.sort(function(a, b) {
-
         let keyA = new Date(a.created_at),
          keyB = new Date(b.created_at);
         // Compare the 2 dates
@@ -164,7 +162,6 @@ function displayUserProfile(user){
         if (keyA > keyB) return -1;
         return 0;
       })
-
     user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
 }
 
@@ -223,7 +220,8 @@ function editUser(user){
 // CREATE POST //
 uploadPostIcon.addEventListener('click', () => createPost())
 let createFormDiv = document.createElement('div')
-    createFormDiv.className = 'create-form-div'
+    // createFormDiv.classList = 'form-group'
+    createFormDiv.classList = 'create-form-div'
 
 function createPost(){
     loginSignupDiv.innerHTML = ''
@@ -234,8 +232,10 @@ function createPost(){
         createForm.setAttribute('id', 'create-form')
     let createFormLabel = document.createElement('label')
         createFormLabel.setAttribute('for', 'create-form')
-        createFormLabel.innerText = 'Create a Post'
+        createFormLabel.className = 'create-form-input'
+        createFormLabel.innerHTML = 'Create a Post<br />'
     let uploadInput = document.createElement('input')
+        uploadInput.className = 'create-form-input'
         uploadInput.setAttribute('type', 'text')
         uploadInput.setAttribute('name', 'url')
         uploadInput.placeholder = 'Image Url'
@@ -244,12 +244,15 @@ function createPost(){
         // uploadInput.setAttribute('name', 'uploadedFile')
         uploadInput.attributes.required = 'Required'
     let createCaptionInput = document.createElement('input')
+        createCaptionInput.className = 'create-form-input'
         createCaptionInput.type = 'text'
         createCaptionInput.name = 'caption'
         createCaptionInput.placeholder = 'Caption'
     let submitCreateInput = document.createElement('input')
+        submitCreateInput.classList = 'create-form-input'
+        submitCreateInput.classList = 'create-form-submit-btn'
         submitCreateInput.setAttribute('type', 'submit')
-        createForm.append(createFormLabel, uploadInput, br, createCaptionInput, br, submitCreateInput)
+        createForm.append(createFormLabel, br, uploadInput, br, createCaptionInput, br, submitCreateInput)
     createFormDiv.append(createForm)
     backDiv.append(createFormDiv)
 
@@ -296,6 +299,7 @@ function getPosts(){
     fetch(postsUrl)
     .then(res => res.json())
     .then(postsArray => {
+        debugger
         postsArray.sort(function(a, b) {
 
             let keyA = new Date(a.created_at),
@@ -395,8 +399,9 @@ function renderPostHome(post){
     
         let timeP = document.createElement('p')
             timeP.className = 'time'
-            let date = new Date(post.created_at)
-            timeP.innerText = date.toDateString() + ', at ' + date.getHours() + ':' + date.getMinutes()
+            timeP.innerText = post.time
+            // let date = new Date(post.created_at)
+            // timeP.innerText = date.toDateString() + ', at ' + date.getHours() + ':' + date.getMinutes()
 
         homePostDiv.append(timeP, addCommentInput)
     
