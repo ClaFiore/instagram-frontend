@@ -206,11 +206,37 @@ function displayUserPost(post, profilePostOuterDiv){
     singlePostDiv.append(imagePostDiv)
 
     let image = document.createElement('img')
+    image.addEventListener('click', () => enlargePost(post, profilePostOuterDiv))
     image.className = 'profile-user-post-image'
     image.src = post.image
     // image.style.width = 10%
     imagePostDiv.append(image)
 }
+
+let xIcon = document.createElement('img')
+    xIcon.src='https://img2.pngio.com/black-x-png-picture-436067-black-x-png-black-x-png-1024_1024.png'
+    xIcon.className = 'x-icon'
+
+function enlargePost(post, profilePostOuterDiv){
+    console.log(post)
+    // profilePostOuterDiv.innerHTML = ''
+    let enlargedPostDiv = document.createElement('div')
+        enlargedPostDiv.className = 'enlarged-post-div'
+        profilePostOuterDiv.prepend(enlargedPostDiv)
+
+    enlargedPostDiv.prepend(xIcon)
+
+    let enlargedImageDiv = document.createElement('div')
+        enlargedImageDiv.className = 'enlarged-image-div'
+        enlargedPostDiv.append(enlargedImageDiv)
+
+    let enlargedImage = document.createElement('img')
+        enlargedImage.src = post.image
+        enlargedImageDiv.append(enlargedImage)
+
+
+}
+
 
 function editUser(user){
  // patch request to edit user
@@ -299,7 +325,6 @@ function getPosts(){
     fetch(postsUrl)
     .then(res => res.json())
     .then(postsArray => {
-        debugger
         postsArray.sort(function(a, b) {
 
             let keyA = new Date(a.created_at),
