@@ -92,7 +92,7 @@ body {
     border-radius: 5px;
 }
 
-/* homepage */
+/* HOMEPAGE */
 
 .homepage-container{
   margin: 0 auto;
@@ -386,30 +386,37 @@ margin: 0 20px 0 0;
 
 /* DISPLAY ENLARGED POST IN USER PROFILE  */
 
-.enlarged-post-div{
-  text-align: center;
-  /* display: block; */
-  border: 3px solid transparent;
-  /* background-color: grey; */
-  /* opacity: 0.8; */
-}
 
 .x-icon{
   height: 5%;
   float: right;
   overflow: auto;
   margin: 0 auto;
- border: 1px solid transparent;
+  border: 1px solid transparent;
+}
+
+.enlarged-post-div{
+  text-align: center;
+  border: 3px solid transparent;
+  display: block;
 }
 
 .enlarged-image-div{
   border: 3px solid transparent;
-  max-height: 600px;
-  max-width: 800px;
   overflow: hidden;
-  margin: 70px 0 0 
+  width: auto;
+  height: 400px;
+  margin: 70px auto; 
+  overflow: hidden;
+  text-align: center;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
 }
 
 .enlargedImage{
-  padding: 30px;
-}
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+} 
