@@ -85,6 +85,7 @@ loginForm.addEventListener('submit', () => {
 //USER PROFILE //
 
 
+
 function displayUserProfile(user){
     loginSignupDiv.innerHTML = ''
     homepageContainerDiv.innerHTML = ''
@@ -114,6 +115,7 @@ function displayUserProfile(user){
             const editUserBtn = document.createElement('button')
             editUserBtn.className = 'edit-user-btn'
             editUserBtn.innerText = 'Edit'
+            editUserBtn.addEventListener('click', () => editUser(user))
             editDiv.append(editUserBtn)
             profileContainer.append(editDiv)}
         else
@@ -152,7 +154,6 @@ function displayUserProfile(user){
     let profilePostOuterDiv = document.createElement('div')
     profilePostOuterDiv.className = 'profile-post-outer-div'
     profileDiv.append(profilePostOuterDiv)
-    // editUserBtn.addEventListener('click', editUser(user))
 
     user.posts.sort(function(a, b) {
         let keyA = new Date(a.created_at),
@@ -164,6 +165,8 @@ function displayUserProfile(user){
       })
     user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
 }
+
+
 
 function follow(user, followBtn, followersSpan){
     configObj = {
@@ -181,6 +184,8 @@ function follow(user, followBtn, followersSpan){
     })
 }
 
+
+
 function unfollow(user, followBtn, followersSpan){
     fetch(followsUrl)
     .then(res => res.json())
@@ -195,6 +200,8 @@ function unfollow(user, followBtn, followersSpan){
         })
     })
 }
+
+
 
 function displayUserPost(post, profilePostOuterDiv){
     let singlePostDiv = document.createElement('div')
@@ -213,12 +220,16 @@ function displayUserPost(post, profilePostOuterDiv){
     imagePostDiv.append(image)
 }
 
+
+
 let xIcon = document.createElement('img')
     xIcon.src='https://img2.pngio.com/black-x-png-picture-436067-black-x-png-black-x-png-1024_1024.png'
     xIcon.className = 'x-icon'
 let enlargedPostDiv = document.createElement('div')
     enlargedPostDiv.className = 'enlarged-post-div'
-    
+
+
+
 function enlargePost(post, profilePostOuterDiv){
     console.log(post)
     enlargedPostDiv.innerHTML = ''
@@ -233,13 +244,14 @@ function enlargePost(post, profilePostOuterDiv){
         enlargedImage.src = post.image
         enlargedImage.className = 'enlargedImage'
         enlargedImageDiv.append(enlargedImage)
-    
-    
+
         xIcon.addEventListener('click', () => enlargedPostDiv.remove())
 }
 
 
 function editUser(user){
+    console.log(user)
+    // profilepostOuterDiv.innerHTML = ''
  // patch request to edit user
 }
 
