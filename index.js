@@ -207,9 +207,9 @@ function displayUserPost(post, profilePostOuterDiv){
 
     let image = document.createElement('img')
     image.addEventListener('click', () => enlargePost(post, profilePostOuterDiv))
+    
     image.className = 'profile-user-post-image'
     image.src = post.image
-    // image.style.width = 10%
     imagePostDiv.append(image)
 }
 
@@ -222,6 +222,7 @@ function enlargePost(post, profilePostOuterDiv){
     // profilePostOuterDiv.innerHTML = ''
     let enlargedPostDiv = document.createElement('div')
         enlargedPostDiv.className = 'enlarged-post-div'
+        
         profilePostOuterDiv.prepend(enlargedPostDiv)
 
     enlargedPostDiv.prepend(xIcon)
@@ -232,9 +233,11 @@ function enlargePost(post, profilePostOuterDiv){
 
     let enlargedImage = document.createElement('img')
         enlargedImage.src = post.image
+        enlargedImage.className = 'enlargedImage'
         enlargedImageDiv.append(enlargedImage)
-
-
+    
+    
+        xIcon.addEventListener('click', () => enlargedPostDiv.remove())
 }
 
 

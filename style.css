@@ -176,7 +176,7 @@ body {
 }
 
 /* user profile top-part with profile image, username, bio */
-
+/* 
 #profile{
   margin: 0 auto;
 }
@@ -196,10 +196,12 @@ body {
   /* top: 20%;
   left: 20%;
   margin: 10px; */
-  border-style: solid;
+  /* border-style: solid;
   border-width: 1px;
-  border-color: #e0e0e0;      /*changed color of border */
-}
+  border-color: #e0e0e0;      changed color of border */
+/* }  */
+
+
 
 /* intro login-signup */
 
@@ -264,6 +266,8 @@ body {
     padding: 10px;
   }
 
+
+  
 /* user profile */
 
 /* user profile top-part with profile image, username, bio */
@@ -392,31 +396,46 @@ margin: 0 20px 0 0;
   float: right;
   overflow: auto;
   margin: 0 auto;
-  border: 1px solid transparent;
 }
 
 .enlarged-post-div{
   text-align: center;
   border: 3px solid transparent;
+  width: 790px;
+  height: 450px;
   display: block;
+  overflow: hidden;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .enlarged-image-div{
   border: 3px solid transparent;
+  display: block;
   overflow: hidden;
-  width: auto;
-  height: 400px;
-  margin: 70px auto; 
-  overflow: hidden;
-  text-align: center;
-  justify-self: center;
-  display: flex;
-  justify-content: center;
+  margin: 0 auto; 
+  
+  height: 100%;
+  width: 100%;
+  position: relative;
+  
 }
 
 .enlargedImage{
-  margin: auto;
-  height: 100%;
-  width: 100%;
+  /* width: 100px;
+  height: auto;
+  display: block;
+  float: center; */
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  height: 400px;
   overflow: hidden;
+
+  position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    margin: auto;
 } 
