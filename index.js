@@ -216,15 +216,13 @@ function displayUserPost(post, profilePostOuterDiv){
 let xIcon = document.createElement('img')
     xIcon.src='https://img2.pngio.com/black-x-png-picture-436067-black-x-png-black-x-png-1024_1024.png'
     xIcon.className = 'x-icon'
-
+let enlargedPostDiv = document.createElement('div')
+    enlargedPostDiv.className = 'enlarged-post-div'
+    
 function enlargePost(post, profilePostOuterDiv){
     console.log(post)
-    // profilePostOuterDiv.innerHTML = ''
-    let enlargedPostDiv = document.createElement('div')
-        enlargedPostDiv.className = 'enlarged-post-div'
-        
-        profilePostOuterDiv.prepend(enlargedPostDiv)
-
+    enlargedPostDiv.innerHTML = ''
+    profilePostOuterDiv.prepend(enlargedPostDiv)
     enlargedPostDiv.prepend(xIcon)
 
     let enlargedImageDiv = document.createElement('div')
@@ -419,7 +417,7 @@ function renderPostHome(post){
                 .then(newcomment => {
                     let newCommentP = document.createElement('p')
                     newCommentP.innerHTML = `<strong>${newcomment.user.username}: </strong> ${newcomment.content}`
-                    homePostDiv.insertBefore(newCommentP, addCommentInput)
+                    homePostDiv.insertBefore(newCommentP, timeP)
                     addCommentInput.value = ''
                 })
             }
