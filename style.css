@@ -306,6 +306,10 @@ body {
   margin: 10px;
 }
 
+.edit-form-div{
+  margin: 20px;
+}
+
 .follow-btn{
   background-color: #405DE6;
   color: white;

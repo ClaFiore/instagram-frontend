@@ -109,13 +109,51 @@ function displayUserProfile(user){
     const profileName = document.createElement('h3')
         profileName.innerText = user.name
     
+    let profilePostOuterDiv = document.createElement('div')
+        profilePostOuterDiv.className = 'profile-post-outer-div'
+    
         if (user === currentUser){
             const editDiv = document.createElement('div')
             editDiv.className = 'edit-user-btn-div'
             const editUserBtn = document.createElement('button')
             editUserBtn.className = 'edit-user-btn'
             editUserBtn.innerText = 'Edit'
-            editUserBtn.addEventListener('click', () => editUser(user))
+            editUserBtn.addEventListener('click', () => {
+                profilePostOuterDiv.innerHTML = ''
+                let editFormDiv = document.createElement('div')
+                editFormDiv.className = 'edit-form-div'
+                profilePostOuterDiv.append(editFormDiv)
+                let editForm = document.createElement('form')
+                    editForm.className = 'edit-form'
+                editFormDiv.append(editForm)
+                    editForm.innerHTML= `<label for='username'>Username: </label>
+                                        <input id='username' type='text' value='${user.username}' name='username'> <br></br>
+                                        <label for='name'>Name: </label>
+                                        <input id='name' type='text' value='${user.name}' name='name'> <br></br>
+                                        <label for='bio'>Bio: </label>
+                                        <input id='bio' type='textarea' value='${user.bio}' name='bio'> <br></br>
+                                        <label for='profilepic'>Profile Picture: </label>
+                                        <input id='profilepic' type='textarea' value='${user.profilepic}' name='profilepic'> <br></br>
+                                        <button id='submit' type='submit name='submit'>Update Profile</button> <br></br>`
+                    editForm.addEventListener('submit', () => {
+                        event.preventDefault()
+                        let username = editForm.username.value
+                        let name = editForm.name.value
+                        let bio = editForm.name.value
+                        let profilepic = editForm.profilepic.value
+                        let configObj = {
+                            method: 'PATCH',
+                            headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+                            body: JSON.stringify({username, name, bio, profilepic})
+                        }
+                        fetch(usersUrl + user.id, configObj)
+                        .then(res => res.json())
+                        .then(updatedUser => {
+                            currentUser = updatedUser
+                            displayUserProfile(updatedUser)})
+                    })
+
+                })
             editDiv.append(editUserBtn)
             profileContainer.append(editDiv)}
         else
@@ -151,8 +189,7 @@ function displayUserProfile(user){
     
     profileContainer.append(picDiv, profileUsername, postAndFollowsCountDiv, profileName, bioUser)
     
-    let profilePostOuterDiv = document.createElement('div')
-    profilePostOuterDiv.className = 'profile-post-outer-div'
+    
     profileDiv.append(profilePostOuterDiv)
 
     user.posts.sort(function(a, b) {
@@ -249,11 +286,15 @@ function enlargePost(post, profilePostOuterDiv){
 }
 
 
-function editUser(user){
-    console.log(user)
-    // profilepostOuterDiv.innerHTML = ''
- // patch request to edit user
-}
+// function editUser(user){
+//     console.log(user)
+//     // profilepostOuterDiv.innerHTML = ''
+//     let posts = document.getElementsByClassName('single-post-div')
+    
+    
+//     posts.forEach(post => console.log(post))
+//  // patch request to edit user
+// }
 
 
 // CREATE POST //
