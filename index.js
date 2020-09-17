@@ -127,13 +127,13 @@ function displayUserProfile(user){
                     editForm.className = 'edit-form'
                 editFormDiv.append(editForm)
                     editForm.innerHTML= `<label for='username'>Username: </label>
-                                        <input id='username' type='text' value='${user.username}' name='username'> <br></br>
+                                        <input class='edit-input' id='username' type='text' value='${user.username}' name='username'> <br></br>
                                         <label for='name'>Name: </label>
-                                        <input id='name' type='text' value='${user.name}' name='name'> <br></br>
+                                        <input class='edit-input' id='name' type='text' value='${user.name}' name='name'> <br></br>
                                         <label for='bio'>Bio: </label>
-                                        <input id='bio' type='textarea' value='${user.bio}' name='bio'> <br></br>
+                                        <input class='edit-input' id='bio' type='textarea' value='${user.bio}' name='bio'> <br></br>
                                         <label for='profilepic'>Profile Picture: </label>
-                                        <input id='profilepic' type='textarea' value='${user.profilepic}' name='profilepic'> <br></br>
+                                        <input class='edit-input' id='profilepic' type='textarea' value='${user.profilepic}' name='profilepic'> <br></br>
                                         <button id='submit' type='submit name='submit'>Update Profile</button> <br></br>`
                     editForm.addEventListener('submit', () => {
                         event.preventDefault()
