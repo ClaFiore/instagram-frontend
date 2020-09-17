@@ -129,18 +129,19 @@ function displayUserProfile(user){
                     editForm.innerHTML= `<label for='username'>Username: </label>
                                         <input class='edit-input' id='username' type='text' value='${user.username}' name='username'> <br></br>
                                         <label for='name'>Name: </label>
-                                        <input class='edit-input' id='name' type='text' value='${user.name}' name='name'> <br></br>
+                                        <input class='edit-input' id='name' type='text' value='${user.name}' name='fullname'> <br></br>
                                         <label for='bio'>Bio: </label>
-                                        <input class='edit-input' id='bio' type='textarea' value='${user.bio}' name='bio'> <br></br>
+                                        <input class='edit-input' id='bio' type='text' value='${user.bio}' name='bio'> <br></br>
                                         <label for='profilepic'>Profile Picture: </label>
                                         <input class='edit-input' id='profilepic' type='textarea' value='${user.profilepic}' name='profilepic'> <br></br>
                                         <button id='submit' type='submit name='submit'>Update Profile</button> <br></br>`
                     editForm.addEventListener('submit', () => {
                         event.preventDefault()
                         let username = editForm.username.value
-                        let name = editForm.name.value
-                        let bio = editForm.name.value
+                        let name = editForm.fullname.value
+                        let bio = editForm.bio.value
                         let profilepic = editForm.profilepic.value
+                        debugger
                         let configObj = {
                             method: 'PATCH',
                             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
@@ -346,7 +347,7 @@ function createPost(){
         .then(res => res.json())
         .then(newPost => {
             createForm.reset()
-            createFormDiv.innerHTML = ''
+            createFormDiv.remove()
             getPosts()
         })
         //                  ***** FORMDATA TO UPLOAD FILE - NEED ACTIVE STORAGE   ****
