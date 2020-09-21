@@ -480,7 +480,7 @@ margin: 0 20px 0 0;
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 200px; /* Location of the box */
+  padding-top: 50px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -495,6 +495,8 @@ margin: 0 20px 0 0;
   display: block;
   width: 80%;
   max-width: 700px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .modal-image, #caption {
@@ -520,6 +522,22 @@ margin: 0 20px 0 0;
   text-decoration: none;
   cursor: pointer;
 }
+
+.specs-div{
+  background-color: white;
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: left;
+  color: black;
+  height: 300px;
+  z-index: 2;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+
 
 
 /* DISPLAY ENLARGED POST IN USER PROFILE  */

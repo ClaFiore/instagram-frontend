@@ -86,7 +86,10 @@ loginForm.addEventListener('submit', () => {
 
 
 
-function displayUserProfile(user){
+function displayUserProfile(person){
+    fetch(usersUrl + person.id)
+    .then(res => res.json())
+    .then(user => { 
     loginSignupDiv.innerHTML = ''
     homepageContainerDiv.innerHTML = ''
     homeIconImg.style.display = 'inline-block'
@@ -202,6 +205,7 @@ function displayUserProfile(user){
         return 0;
       })
     user.posts.forEach(post => displayUserPost(post, profilePostOuterDiv))
+})
 }
 
 
@@ -251,8 +255,7 @@ function displayUserPost(post, profilePostOuterDiv){
     singlePostDiv.append(imagePostDiv)
 
     let image = document.createElement('img')
-    image.addEventListener('click', () => imageModal(post, profilePostOuterDiv))
-    // image.addEventListener('click', () => enlargePost(post, profilePostOuterDiv))
+    image.addEventListener('click', () => modal(post, profilePostOuterDiv))
     
     image.className = 'profile-user-post-image'
     image.src = post.image
@@ -260,7 +263,7 @@ function displayUserPost(post, profilePostOuterDiv){
 
 }
 
-function imageModal(post, profilePostOuterDiv){
+function modal(post, profilePostOuterDiv){
     let modalDiv = document.createElement('div')
     modalDiv.className = 'modal'
     profilePostOuterDiv.append(modalDiv)
@@ -268,17 +271,97 @@ function imageModal(post, profilePostOuterDiv){
     let modalImage = document.createElement('img')
     modalImage.className = 'modal-image'
     modalDiv.append(modalImage)
+    modalDiv.style.display = "block";
+    modalImage.src = post.image;
 
     let closingSpan = document.createElement('span')
     closingSpan.className = 'closing-span'
     closingSpan.innerText = 'X'
     modalDiv.append(closingSpan)
-    closingSpan.addEventListener('click', () => {
-        modalDiv.remove()
-    })
+    closingSpan.addEventListener('click', () => modalDiv.remove())
 
-    modalDiv.style.display = "block";
-    modalImage.src = post.image;
+    let specsDiv = document.createElement('div')
+    specsDiv.className = 'specs-div'
+    modalDiv.append(specsDiv)
+
+    const likeBtnDiv = document.createElement('div')
+    const likeBtn = document.createElement('button')
+    const likesCount = document.createElement('p')
+        likesCount.className = 'likes-count'
+        likesCount.innerText = post.likes.length
+        console.log(post)
+        if (post.likes.length > 0){
+            let bool = post.likes.some(like => (like.user_id === currentUser.id))
+                if (bool)
+                likeBtn.innerText = '❤️'
+                else
+                likeBtn.innerText = '♡'
+                }
+        else{
+            likeBtn.innerText = '♡'}
+  
+        likeBtn.className = 'heart-btn'
+        likeBtn.style.paddingLeft = '10px'
+        likeBtn.addEventListener('click', () => likeOrUnlikeAPost(post, likeBtn, likesCount))
+        likeBtnDiv.append(likeBtn)
+    
+        likeBtnDiv.append(likesCount)
+        specsDiv.append(likeBtnDiv)
+
+        let captionP = document.createElement('p')
+        captionP.style.paddingLeft = '10px'
+        captionP.style.paddingBottom = '10px'
+        captionP.innerHTML = post.caption
+        console.log(captionP)
+        specsDiv.append(captionP)
+
+        console.log(post.comments)
+        if (post.comments.length > 0) {
+            post.comments.forEach(comment => {
+                let commentP = document.createElement('p')
+                fetch(usersUrl + comment.user_id)
+                .then(res => res.json())
+                .then(commentUser => {
+                commentP.innerHTML = `<strong>${commentUser.username}: </strong> ${comment.content}`
+                commentP.style.paddingLeft = '10px'
+            })
+            specsDiv.append(commentP)
+                
+            })}
+        
+        let addCommentInput = document.createElement('input')
+        specsDiv.append(addCommentInput)
+            addCommentInput.className = 'add-new-comment'
+            addCommentInput.setAttribute('type', 'text')
+            addCommentInput.style.paddingLeft = '10px'
+            addCommentInput.setAttribute('placeholder', 'Add a comment...')
+            addCommentInput.setAttribute('id', currentUser.id)
+            addCommentInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    let content = addCommentInput.value
+                        
+                    configObj = {method: 'POST', 
+                                headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                                body: JSON.stringify({content, user_id: currentUser.id, post_id: post.id})}
+                        
+                    fetch(commentsUrl, configObj)
+                    .then(res => res.json())
+                    .then(newcomment => {
+                        let newCommentP = document.createElement('p')
+                        newCommentP.innerHTML = `<strong>${newcomment.user.username}: </strong> ${newcomment.content}`
+                        newCommentP.style.paddingLeft = '10px'
+                        specsDiv.insertBefore(newCommentP, timeP)
+                        addCommentInput.value = ''
+                    })
+                }
+            });
+        
+            let timeP = document.createElement('p')
+                timeP.className = 'time'
+                timeP.innerText = post.time
+                timeP.style.paddingLeft = '10px'
+                specsDiv.append(timeP, addCommentInput)
+    
 }
 
 
