@@ -268,9 +268,13 @@ function modal(post, profilePostOuterDiv){
     modalDiv.className = 'modal'
     profilePostOuterDiv.append(modalDiv)
 
+    let imageDivModal = document.createElement('div')
+    imageDivModal.className = 'image-div-modal'
+    modalDiv.append(imageDivModal)
+
     let modalImage = document.createElement('img')
     modalImage.className = 'modal-image'
-    modalDiv.append(modalImage)
+    imageDivModal.append(modalImage)
     modalDiv.style.display = "block";
     modalImage.src = post.image;
 
@@ -312,20 +316,28 @@ function modal(post, profilePostOuterDiv){
         captionP.style.paddingLeft = '10px'
         captionP.style.paddingBottom = '10px'
         captionP.innerHTML = post.caption
-        console.log(captionP)
         specsDiv.append(captionP)
 
-        console.log(post.comments)
         if (post.comments.length > 0) {
             post.comments.forEach(comment => {
+                let commentDiv = document.createElement('div')
+                commentDiv.className = 'comment-div'
                 let commentP = document.createElement('p')
+                commentP.className = 'comment'
+                commentDiv.append(commentP)
                 fetch(usersUrl + comment.user_id)
                 .then(res => res.json())
                 .then(commentUser => {
                 commentP.innerHTML = `<strong>${commentUser.username}: </strong> ${comment.content}`
-                commentP.style.paddingLeft = '10px'
+                    if (commentUser.id === currentUser.id){
+                        let editCaptionSpan = document.createElement('span')
+                        editCaptionSpan.innerText = 'Edit'
+                        editCaptionSpan.className = 'edit-caption-span'
+                        editCaptionSpan.addEventListener('click', () => editComment(comment, commentUser, commentP, editCaptionSpan, commentDiv))
+                        commentDiv.append(editCaptionSpan)
+                    }
             })
-            specsDiv.append(commentP)
+            specsDiv.append(commentDiv)
                 
             })}
         
@@ -334,6 +346,8 @@ function modal(post, profilePostOuterDiv){
             addCommentInput.className = 'add-new-comment'
             addCommentInput.setAttribute('type', 'text')
             addCommentInput.style.paddingLeft = '10px'
+            addCommentInput.style.position = 'absolute'                             //***INLINE STYLING FOR TIME AND COMMENT INPUT INSIDE POST ***
+            addCommentInput.style.bottom = '10px'
             addCommentInput.setAttribute('placeholder', 'Add a comment...')
             addCommentInput.setAttribute('id', currentUser.id)
             addCommentInput.addEventListener('keypress', function (e) {
@@ -360,8 +374,16 @@ function modal(post, profilePostOuterDiv){
                 timeP.className = 'time'
                 timeP.innerText = post.time
                 timeP.style.paddingLeft = '10px'
+                timeP.style.position = 'absolute'
+                timeP.style.bottom = '40px'                                         //***INLINE STYLING FOR TIME AND COMMENT INPUT INSIDE POST ***
                 specsDiv.append(timeP, addCommentInput)
     
+}
+
+function editComment(comment, commentUser, commentP, editCaptionSpan, commentDiv){
+    commentDiv.innerHTML = `<strong>${commentUser.username}:</strong> <input value='${comment.content}'>`
+    
+
 }
 
 

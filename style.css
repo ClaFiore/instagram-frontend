@@ -489,13 +489,34 @@ margin: 0 20px 0 0;
   background-color: rgb(64, 64, 64,0.7); /* Black w/ opacity */
 }
 
+.image-div-modal{
+  display: block;
+  overflow: hidden;
+  width: 700px;
+  height: 400px;
+  position: relative;
+  margin: auto;
+  background-color: black;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
 .modal-image {
   margin: auto;
   display: block;
-  width: 80%;
-  max-width: 700px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: 400px;
+  overflow: hidden;
+  position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
 }
 
 .modal-image, #caption {
@@ -534,9 +555,29 @@ margin: 0 20px 0 0;
   z-index: 2;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  position: relative;
 }
 
+.edit-caption-span{
+  color: grey;
+  font-size: 12px;
+  margin-right: 10px;
+  
+  /* padding-right: 20px; */
+  cursor: pointer;
+ 
+}
+.comment{
+  
+}
 
+.comment-div{
+  padding-left: 10px;
+  text-align: left;
+  /* border: 1px solid black; */
+  
+
+}
 
 
 /* DISPLAY ENLARGED POST IN USER PROFILE  */
