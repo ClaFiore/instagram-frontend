@@ -312,7 +312,7 @@ body {
   position: relative;
   width: 780px;
   height: auto;
-  z-index: 15;
+  /* z-index: 15; */
   /* top: 20%;
   left: 20%;
   margin: 10px; */
@@ -458,18 +458,67 @@ margin: 0 20px 0 0;
 }
 
 .profile-user-post-image{
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+
   margin-left: auto;
   margin-right: auto;
   width: auto;
   height: 200px;
   overflow: hidden;
-
   position: absolute;
     top: -9999px;
     bottom: -9999px;
     left: -9999px;
     right: -9999px;
     margin: auto;
+}
+.profile-user-post-image:hover {opacity: 0.7;}
+
+.modal{
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 200px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgb(0, 0, 0,0.85); /* Black w/ opacity */
+}
+
+.modal-image {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+.modal-image, #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+.closing-span {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 30px;
+  font-weight: bold;
+  transition: 0.3s;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.cclosing-span:hover,
+.closing-span:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 

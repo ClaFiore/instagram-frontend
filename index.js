@@ -251,11 +251,34 @@ function displayUserPost(post, profilePostOuterDiv){
     singlePostDiv.append(imagePostDiv)
 
     let image = document.createElement('img')
-    image.addEventListener('click', () => enlargePost(post, profilePostOuterDiv))
+    image.addEventListener('click', () => imageModal(post, profilePostOuterDiv))
+    // image.addEventListener('click', () => enlargePost(post, profilePostOuterDiv))
     
     image.className = 'profile-user-post-image'
     image.src = post.image
     imagePostDiv.append(image)
+
+}
+
+function imageModal(post, profilePostOuterDiv){
+    let modalDiv = document.createElement('div')
+    modalDiv.className = 'modal'
+    profilePostOuterDiv.append(modalDiv)
+
+    let modalImage = document.createElement('img')
+    modalImage.className = 'modal-image'
+    modalDiv.append(modalImage)
+
+    let closingSpan = document.createElement('span')
+    closingSpan.className = 'closing-span'
+    closingSpan.innerText = 'X'
+    modalDiv.append(closingSpan)
+    closingSpan.addEventListener('click', () => {
+        modalDiv.remove()
+    })
+
+    modalDiv.style.display = "block";
+    modalImage.src = post.image;
 }
 
 
