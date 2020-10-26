@@ -667,8 +667,8 @@ function signupFunct(){
     signupModal.append(spanCloseModal)
     signupForm.append(inputEmail, br, inputName, br, inputUsername, br, inputPassword, br, inputSubmit)
     
-    signupForm.addEventListener('submit', () => {
-        event.preventDefault()
+    signupForm.addEventListener('submit', (e) => {
+        e.preventDefault()
         console.log(inputEmail.value, inputUsername.value, inputPassword.value)
         let email = inputEmail.value
         let name = inputName.value
