@@ -84,12 +84,11 @@ loginForm.addEventListener('submit', () => {
 
 //USER PROFILE //
 
-
-
 function displayUserProfile(person){
     fetch(usersUrl + person.id)
     .then(res => res.json())
     .then(user => { 
+        //after login clear login div and display navbar with icons
     loginSignupDiv.innerHTML = ''
     homepageContainerDiv.innerHTML = ''
     homeIconImg.style.display = 'inline-block'
@@ -97,7 +96,7 @@ function displayUserProfile(person){
     uploadPostIcon.style.display = 'inline-block'
     profileDiv.innerHTML = ''
     createFormDiv.innerHTML = ''
-
+        // then create and display divs with user's info and posts
     const profileContainer = document.createElement('div')
         profileContainer.className = 'container'
         profileDiv.append(profileContainer)
